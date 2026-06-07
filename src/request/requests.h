@@ -3,8 +3,8 @@
 
 #define SERVERURL "http://localhost:6702"
 
-#include <stdlib.h>
 #include <curl/curl.h>
+#include <stdlib.h>
 
 typedef struct {
 	const char* readptr;

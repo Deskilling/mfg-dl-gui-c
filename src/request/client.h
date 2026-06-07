@@ -4,12 +4,11 @@
 #include <curl/curl.h>
 
 typedef struct {
-    CURL* client;
-    CURLcode request;
+	CURL* client;
+	CURLcode request;
 } client;
 
 CURL* initClient();
 void cleanupClient(CURL* curl);
-
 
 #endif

@@ -33,7 +33,7 @@ static size_t write_cb(void* contents, size_t size, size_t nmemb, void* userp) {
 
 	char* ptr = realloc(buffer->content, buffer->size + realsize + 1);
 	if (!ptr) {
-	    fprintf(stderr, "not enought memory (realloc returned NULL)\n");
+		fprintf(stderr, "not enought memory (realloc returned NULL)\n");
 		return 0;
 	}
 

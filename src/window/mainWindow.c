@@ -1,29 +1,45 @@
-#include <GLFW/glfw3.h>
-#include <leif/leif.h>
+#include <raylib.h>
+
+#include "src/request/api/api.h"
+#include "src/request/client.h"
+#include "src/request/requests.h"
+
+#include "src/fonts/inter.h"
 
 int mainWindow() {
-  glfwInit();
-  GLFWwindow* window = glfwCreateWindow(800, 600, "Hello", NULL, NULL);
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+	InitWindow(800, 600, "mfg");
 
-  glfwMakeContextCurrent(window);
+	Font font = LoadFontFromMemory(".ttf", Inter_VariableFont_opsz_wght_ttf, Inter_VariableFont_opsz_wght_ttf_len, 48, NULL, 0);
+	SetTextureFilter(font.texture, TEXTURE_FILTER_BILINEAR);
 
-  lf_init_glfw(800, 600, window);
+	CURL* curl = initClient();
+	if (!curl) {
+		fprintf(stderr, "Failed to init curl\n");
+		UnloadFont(font);
+		CloseWindow();
+		return 1;
+	}
 
-  while(!glfwWindowShouldClose(window)) {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	Response r = postHealth(curl);
 
-    lf_begin();
+	while (!WindowShouldClose()) {
+		BeginDrawing();
+		ClearBackground((Color){28, 28, 28, 255});
 
-    lf_text("Hello, Leif!");
+		if (r.code == CURLE_OK && r.content) {
+			DrawTextEx(font, r.content, (Vector2){50, 50}, 24, 1.0f, WHITE);
+		} else {
+			DrawTextEx(font, "Request Failed", (Vector2){50, 50}, 24, 1.0f, RED);
+		}
 
-    lf_end();
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-  }
-  lf_terminate();
-  glfwDestroyWindow(window);
-  glfwTerminate();
+		EndDrawing();
+	}
 
-  return 0;
+	freeResponse(&r);
+	cleanupClient(curl);
+
+	UnloadFont(font);
+	CloseWindow();
+	return 0;
 }

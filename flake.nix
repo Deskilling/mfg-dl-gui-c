@@ -26,11 +26,8 @@
             clang-tools
             pkg-config
 
-            glfw
-            cglm
-            libclipboard
-            libxrandr
-            libxcursor
+            curl
+            raylib
           ];
 
           shellHook = ''
