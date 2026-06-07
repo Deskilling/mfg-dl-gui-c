@@ -27,6 +27,9 @@
             pkg-config
 
             curl
+            cjson
+            libxau
+            libxdmcp
             raylib
           ];
 

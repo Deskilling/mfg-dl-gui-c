@@ -1,8 +1,8 @@
 #ifndef API_H
 #define API_H
 
-#include "src/request/requests.h"
+#include <curl/curl.h>
 
-Response postHealth(CURL* curl);
+int health(CURL* curl);
 
 #endif

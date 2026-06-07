@@ -72,4 +72,5 @@ Response sendPost(CURL* curl, Request* request) {
 
 void freeResponse(Response* response) {
 	free(response->content);
+	response->content = NULL;
 }

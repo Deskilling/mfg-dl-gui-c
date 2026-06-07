@@ -4,7 +4,7 @@
 #define SERVERURL "http://localhost:6702"
 
 #include <curl/curl.h>
-#include <stdlib.h>
+#include <cjson/cJSON.h>
 
 typedef struct {
 	const char* readptr;
@@ -18,7 +18,7 @@ typedef struct {
 } Request;
 
 typedef struct {
-	char* content;
+    char* content;
 	size_t size;
 	CURLcode code;
 } Response;
