@@ -45,4 +45,6 @@ void test() {
 
 		results = results->next;
 	}
+
+	freeSearchResult(results);
 }

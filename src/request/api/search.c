@@ -100,3 +100,23 @@ SearchResult* search(CURL* curl, char* query) {
 	cJSON_Delete(json);
 	return results;
 }
+
+void freeSearchResult(SearchResult* result) {
+	while (result != NULL) {
+		SearchResult* next = result->next;
+
+		free(result->service);
+		free(result->name);
+		free(result->href);
+		free(result->description);
+		free(result->cover);
+		free(result->productionYear);
+
+		if (result->scores != NULL) {
+			// TODO if scores are implemented
+		}
+
+		free(result);
+		result = next;
+	}
+}

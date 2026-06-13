@@ -30,5 +30,6 @@ typedef struct {
 } SearchResult;
 
 SearchResult* search(CURL* curl, char* query);
+void freeSearchResult(SearchResult* result);
 
 #endif
