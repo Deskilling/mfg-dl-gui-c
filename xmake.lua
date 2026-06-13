@@ -3,7 +3,10 @@ set_project("template")
 set_languages("c11")
 
 add_requires("libcurl")
+
 add_requires("raylib")
+add_requires("raygui")
+
 add_requires("cjson")
 add_requires("libxau")
 add_requires("libxdmcp")
@@ -17,8 +20,10 @@ target("mfgdlui")
         add_includedirs("includes")
     end
 
-    add_packages("raylib")
     add_packages("libcurl")
+
+    add_packages("raylib")
+
     add_packages("cjson")
 
     add_packages("libxau")

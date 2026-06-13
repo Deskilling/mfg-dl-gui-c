@@ -1,6 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-int mainWindow();
+typedef struct {
+
+} windowState;
+
+int createWindow();
+int runWindow();
 
 #endif

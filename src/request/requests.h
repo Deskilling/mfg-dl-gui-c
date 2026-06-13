@@ -1,5 +1,5 @@
-#ifndef REQUESTS_H
-#define REQUESTS_H
+#ifndef MFG_REQUESTS_H
+#define MFG_REQUESTS_H
 
 #define SERVERURL "http://localhost:6702"
 
@@ -18,7 +18,7 @@ typedef struct {
 } Request;
 
 typedef struct {
-    char* content;
+	char* content;
 	size_t size;
 	CURLcode code;
 } Response;

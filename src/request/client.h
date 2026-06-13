@@ -1,5 +1,5 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef MFG_CLIENT_H
+#define MFG_CLIENT_H
 
 #include <curl/curl.h>
 

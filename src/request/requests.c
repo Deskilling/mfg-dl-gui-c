@@ -56,6 +56,11 @@ Response sendPost(CURL* curl, Request* request) {
 	Writer wt = {request->content, strlen(request->content)};
 
 	response.content = malloc(1);
+	if (response.content == NULL) {
+		fprintf(stderr, "malloc failed in sendPost\n");
+		exit(-1);
+	}
+
 	response.size = 0;
 
 	curl_easy_setopt(curl, CURLOPT_URL, request->location);

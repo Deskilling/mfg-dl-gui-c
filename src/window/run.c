@@ -5,7 +5,7 @@
 
 #include "src/fonts/inter.h"
 
-int mainWindow() {
+int runWindow() {
 	CURL* curl = initClient();
 	if (!curl) {
 		fprintf(stderr, "Failed to init curl\n");
@@ -30,7 +30,6 @@ int mainWindow() {
 
 		BeginDrawing();
 		ClearBackground((Color){28, 28, 28, 255});
-
 		if (serverRunning) {
 			DrawTextEx(font, "Server Ok", (Vector2){50, 50}, 24, 1.0f, WHITE);
 		} else {
