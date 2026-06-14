@@ -1,4 +1,4 @@
-#define NOWINDOW 1
+#define NOWINDOW 0
 
 #include <stdio.h>
 

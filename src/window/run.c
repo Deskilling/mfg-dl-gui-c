@@ -1,13 +1,17 @@
-#include <raylib.h>
+#include "window.h"
 
-#include "src/request/api/api.h"
+#include <raylib.h>
+#include <string.h>
+
 #include "src/request/client.h"
 
 #include "src/fonts/inter.h"
 
 int runWindow() {
-	CURL* curl = initClient();
-	if (!curl) {
+	State state = {0};
+
+	state.curl = initClient();
+	if (!state.curl) {
 		fprintf(stderr, "Failed to init curl\n");
 		return -1;
 	}
@@ -15,33 +19,30 @@ int runWindow() {
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 	InitWindow(800, 600, "mfg");
 
-	Font font = LoadFontFromMemory(".ttf", Inter_VariableFont_opsz_wght_ttf, Inter_VariableFont_opsz_wght_ttf_len, 48, NULL, 0);
-	SetTextureFilter(font.texture, TEXTURE_FILTER_BILINEAR);
-
-	int serverRunning = health(curl);
-	double lastCheck = GetTime();
-	const double CHECK_INTERVAL = 2.0;
+	state.font = LoadFontFromMemory(".ttf", Inter_VariableFont_opsz_wght_ttf, Inter_VariableFont_opsz_wght_ttf_len, 48, NULL, 0);
+	SetTextureFilter(state.font.texture, TEXTURE_FILTER_BILINEAR);
 
 	while (!WindowShouldClose()) {
-		if (GetTime() - lastCheck >= CHECK_INTERVAL) {
-			serverRunning = health(curl);
-			lastCheck = GetTime();
+		BeginDrawing();
+		ClearBackground((Color){28, 28, 28, 0});
+
+		handleCharInput(&state);
+		handleBackspace(&state);
+		drawQueryBar(&state);
+
+		if (pressedEnter()) {
+			handleSearch(&state);
 		}
 
-		BeginDrawing();
-		ClearBackground((Color){28, 28, 28, 255});
-		if (serverRunning) {
-			DrawTextEx(font, "Server Ok", (Vector2){50, 50}, 24, 1.0f, WHITE);
-		} else {
-			DrawTextEx(font, "Request Failed", (Vector2){50, 50}, 24, 1.0f, RED);
+		if (state.drawResults) {
+			displayResults(&state);
 		}
 
 		EndDrawing();
 	}
 
-	cleanupClient(curl);
-
-	UnloadFont(font);
+	cleanupClient(state.curl);
+	UnloadFont(state.font);
 	CloseWindow();
 	return 0;
 }
