@@ -23,8 +23,9 @@ void handleBackspace(State* state) {
 		state->query[state->queryLen] = ' ';
 		state->query[++(state->queryLen)] = '\0';
 	} else if (IsKeyPressed(KEY_BACKSPACE)) {
-		if (state->queryLen > 0)
+		if (state->queryLen > 0) {
 			state->query[--(state->queryLen)] = '\0';
+		}
 		state->backspaceTimer = -BACKSPACE_INITIAL_DELAY;
 	} else if (IsKeyDown(KEY_BACKSPACE)) {
 		state->backspaceTimer += GetFrameTime();
@@ -37,10 +38,42 @@ void handleBackspace(State* state) {
 	}
 }
 
-int pressedEnter() {
-	if (IsKeyPressed(KEY_ENTER)) {
-		return 1;
+void handleUpDownSearch(State* state) {
+	const float ARROWS_INITIAL_DELAY = 0.4f;
+	const float ARROWS_REPEAT_RATE = 0.05f;
+
+	if (state->resultsLen <= 0) {
+		return;
 	}
 
-	return 0;
+	if (IsKeyPressed(KEY_UP)) {
+		if (state->searchSelected > 0) {
+			state->searchSelected--;
+		} else if (state->searchSelected == 0) {
+			state->mode = SEARCH;
+			state->displayResults = 1;
+			state->searchSelected = -1;
+			return;
+		}
+		state->arrowTimer = -ARROWS_INITIAL_DELAY;
+	} else if (IsKeyPressed(KEY_DOWN)) {
+		if (state->searchSelected < state->resultsLen - 1) {
+			state->searchSelected++;
+		}
+		state->arrowTimer = -ARROWS_INITIAL_DELAY;
+	} else if (IsKeyDown(KEY_UP)) {
+		state->arrowTimer += GetFrameTime();
+		while (state->arrowTimer >= ARROWS_REPEAT_RATE && state->searchSelected > 0) {
+			state->searchSelected--;
+			state->arrowTimer -= ARROWS_REPEAT_RATE;
+		}
+	} else if (IsKeyDown(KEY_DOWN)) {
+		state->arrowTimer += GetFrameTime();
+		while (state->arrowTimer >= ARROWS_REPEAT_RATE && state->searchSelected < state->resultsLen - 1) {
+			state->searchSelected++;
+			state->arrowTimer -= ARROWS_REPEAT_RATE;
+		}
+	} else {
+		state->arrowTimer = 0.0f;
+	}
 }

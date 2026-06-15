@@ -5,18 +5,31 @@
 
 #include "src/request/api/api.h"
 
+typedef enum {
+    SEARCH,
+    SELECT_SEARCH,
+    SCORE,
+    SEASONS,
+    EPISODES,
+} mode;
+
 typedef struct {
 	CURL* curl;
 	Font font;
+	mode mode;
 
 	// input
 	float backspaceTimer;
+	float arrowTimer;
 
 	// search
 	char query[80];
 	int queryLen;
 	SearchResult* results;
-	int drawResults;
+	int resultsLen;
+	int displayResults;
+
+	int searchSelected;
 
 } State;
 
@@ -25,6 +38,7 @@ int runWindow();
 
 void handleCharInput(State* state);
 void handleBackspace(State* state);
+void handleUpDownSearch(State* state);
 int pressedEnter();
 
 void drawQueryBar(State* state);

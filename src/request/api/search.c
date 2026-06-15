@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "api.h"
+#include "curl/curl.h"
 #include "src/request/requests.h"
 #include "src/util/json.h"
 
@@ -82,7 +83,7 @@ Response postSearch(CURL* curl, char* query) {
 SearchResult* search(CURL* curl, char* query) {
 	SearchResult* empty = {0};
 
-	Response r = postSearch(curl, query);
+	Response r = postSearch(curl, curl_easy_escape(curl, query, strlen(query)));
 	if (r.content == NULL) {
 		fprintf(stderr, "Response is NULL\n");
 		return empty;

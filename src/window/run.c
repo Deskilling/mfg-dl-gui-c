@@ -9,6 +9,7 @@
 
 int runWindow() {
 	State state = {0};
+	state.mode = SEARCH;
 
 	state.curl = initClient();
 	if (!state.curl) {
@@ -26,16 +27,58 @@ int runWindow() {
 		BeginDrawing();
 		ClearBackground((Color){28, 28, 28, 0});
 
-		handleCharInput(&state);
-		handleBackspace(&state);
 		drawQueryBar(&state);
 
-		if (pressedEnter()) {
-			handleSearch(&state);
+		// printf("%i\n", state.searchSelected);
+		// printf("State %i\n", state.mode);
+
+		switch (state.mode) {
+		case SEARCH: {
+			handleCharInput(&state);
+			handleBackspace(&state);
+
+			if (state.displayResults) {
+				displayResults(&state);
+				if (IsKeyPressed(KEY_DOWN) && state.resultsLen != 0) {
+					state.mode = SELECT_SEARCH;
+				}
+			}
+
+			if (IsKeyPressed(KEY_ENTER)) {
+				handleSearch(&state);
+				if (state.resultsLen != 0) {
+					state.searchSelected = 0;
+					state.mode = SELECT_SEARCH;
+				} else {
+					state.displayResults = 1;
+				}
+			}
+
+			break;
 		}
 
-		if (state.drawResults) {
+		case SELECT_SEARCH: {
 			displayResults(&state);
+			handleUpDownSearch(&state);
+
+			break;
+		}
+
+		case SCORE: {
+			break;
+		}
+
+		case SEASONS: {
+			break;
+		}
+
+		case EPISODES: {
+			break;
+		}
+
+		default: {
+			break;
+		}
 		}
 
 		EndDrawing();
