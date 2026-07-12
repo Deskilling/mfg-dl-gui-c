@@ -6,30 +6,34 @@
 int health(CURL* curl);
 
 typedef struct {
-    double score;
-    char* query;
-    char* href;
+	double score;
+	char* query;
+	char* href;
 } Score;
 
 typedef struct {
-    char* key;
-    Score value;
+	char* key;
+	Score value;
+	void* prev;
+	void* next;
 } ScoreEntry;
 
 typedef struct {
-    void* prev;
-    void* next;
-    char* service;
-    char* name;
-    char* href;
-    char* description;
-    char* cover;
-    char* productionYear;
-    ScoreEntry* scores;
-    int scoreCount;
+	void* prev;
+	void* next;
+	char* service;
+	char* name;
+	char* href;
+	char* description;
+	char* cover;
+	char* productionYear;
+	ScoreEntry* scores;
+	int scoreCount;
 } SearchResult;
 
 SearchResult* search(CURL* curl, char* query);
 void freeSearchResult(SearchResult* result);
+
+SearchResult* score(CURL* curl, SearchResult* result);
 
 #endif

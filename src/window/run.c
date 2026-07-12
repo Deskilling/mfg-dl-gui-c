@@ -1,3 +1,4 @@
+#include "src/request/api/api.h"
 #include "window.h"
 
 #include <raylib.h>
@@ -61,10 +62,17 @@ int runWindow() {
 			displayResults(&state);
 			handleUpDownSearch(&state);
 
+			if (IsKeyPressed(KEY_ENTER)) {
+				state.results[state.searchSelected] = *score(state.curl, &state.results[state.searchSelected]);
+				printf("%s", (char*)state.results[state.searchSelected].scores);
+				state.mode = SCORE;
+			}
+
 			break;
 		}
 
 		case SCORE: {
+			displayScore(&state);
 			break;
 		}
 

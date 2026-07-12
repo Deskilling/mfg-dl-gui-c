@@ -13,6 +13,7 @@ add_requires("libxdmcp")
 
 target("mfgdlui")
     set_kind("binary")
+    set_targetdir("build")
     add_files("src/**.c")
     add_includedirs(".")
 

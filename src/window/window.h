@@ -6,11 +6,11 @@
 #include "src/request/api/api.h"
 
 typedef enum {
-    SEARCH,
-    SELECT_SEARCH,
-    SCORE,
-    SEASONS,
-    EPISODES,
+	SEARCH,
+	SELECT_SEARCH,
+	SCORE,
+	SEASONS,
+	EPISODES,
 } mode;
 
 typedef struct {
@@ -44,5 +44,7 @@ int pressedEnter();
 void drawQueryBar(State* state);
 void handleSearch(State* state);
 void displayResults(State* state);
+
+void displayScore(State* state);
 
 #endif
